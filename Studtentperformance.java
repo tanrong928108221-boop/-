@@ -1,10 +1,14 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
     public class Studtentperformance{
         public static void main(String[] args) {
             Scanner input = new Scanner (System.in);
             int count = 0 , passCount = 0;
-            double max = -1 , min = 101, total = 0;
+            double max = -1 , min = 101, total = 0 , score = 0 ;
+            List<Double> scores = new ArrayList <> ();
 
             int excellentCount =0;
             int aPlus = 0, aMinus = 0, bCount = 0, cCount = 0, gCount = 0 , dCount = 0;
@@ -18,8 +22,7 @@ import java.util.Scanner;
                     continue;
                 }
 
-            System.out.println ("Enter a score");
-           double score = input.nextDouble();
+            score = input.nextDouble();
             System.out.println();
 
             if(score == -1){
@@ -42,17 +45,18 @@ import java.util.Scanner;
 
         count++;
         total += score;
+        scores.add (score);
         if (score > max) max = score;
         if (score < min) min = score;
         if (score >= 40) passCount++;
-        if (score >= 99) excellentCount++;
+        if (score >= 80) excellentCount++;
 
-        if (score > 99) aPlus++;
-        else if (score >80) aMinus++;
-        else if (score >60) bCount++;
-        else if (score >50) cCount++;
-        else if (score > 40) dCount++;
-        if (score > 0)gCount++;
+        if (score >= 99) aPlus++;
+        else if (score >= 80) aMinus++;
+        else if (score >= 60) bCount++;
+        else if (score >= 50) cCount++;
+        else if (score >= 40) dCount++;
+       else gCount++;
 
     }
 
@@ -66,16 +70,52 @@ import java.util.Scanner;
         System.out.printf("及格人数：%d%n" , passCount);
         System.out.printf("及格率：%.2f%%%n" , passCount * 100.0/ count);
         System.out.printf("优秀率（>=80) : %.2f%%%n" ,excellentCount * 100.0/count);
-        System.out.printf("不及格率（<40) :%.2f%%%n" ,(count - excellentCount) * 100.0/count);
+        System.out.printf("不及格率（<40) :%.2f%%%n" ,(count - passCount) * 100.0/count);
+
+         // ===== 1. 中位数 =====
+            Collections.sort(scores);
+            int n = scores.size();
+            double median;
+            if (n % 2 == 1){
+                median = scores.get(n/2);
+            }else{
+                median = (scores.get(n / 2-1) + scores.get (n / 2)) / 2.0;
+            }
+            System.out.printf("中位数 : %.2f%n" , median);
+
+            // 2. 标准差 
+            double mean = total / count;
+            double varSum = 0;
+            for (double s : scores){
+                varSum += Math.pow (s - mean , 2);
+            }
+            double stdDev = Math.sqrt(varSum / count);
+            System.out.printf("标准差 : %.2f%n" , stdDev);
+
+            //3.分数段直方图
+          int [] bins = new int [10];
+          for (double s : scores) {
+            int idx = (int) Math.min (s / 10 , 9);
+            bins [idx]++;
+          }
+          System.out.println();
+          System.out.println("分数段直方图");
+          int i ;
+          for ( i = 0 ; i < 10 ; i++);
+          int low = i * 10;
+          int hight = (i == 9) ? 100 : i * 10 + 9;
+          System.out.printf("%3d - %3d |" , low , hight);
+          for (int j = 0; j < 10; j++) System.out.println("");
+          System.out.println(" " + bins [1]);
 
         System.out.println();
         System.out.println(" 各等级人数和占比");
-        System.out.printf("A+ (99-100) : %d 人 (%.2f%%)%n" , aPlus , aPlus *100.0/count);
-        System.out.printf("A- (80-98) : %d 人 (%.2f%%)%n " , aMinus , aMinus * 100.0/count);
-        System.out.printf("B (60-79) : %d 人 (%.2f%%)%n " , bCount , bCount * 100.0/count);
-        System.out.printf("C (50-69) : %d 人 (%.2f%%) %n" , cCount , cCount *100.0/count );
-        System.out.printf("D (4049) : %d 人(%.2f%%) %n" , dCount , dCount *100.0/count);
-        System.out.printf("G (0-39) : %d 人 (%.2f%%)%n ", gCount , gCount * 100.0/count);
+        System.out.printf("A+ (99-100) : %d 人 (%.2f%%)" , aPlus , aPlus *100.0/count);
+        System.out.printf("A- (80-98) : %d 人 (%.2f%%) " , aMinus , aMinus * 100.0/count);
+        System.out.printf("B (60-79) : %d 人 (%.2f%%) " , bCount , bCount * 100.0/count);
+        System.out.printf("C (50-69) : %d 人 (%.2f%%) " , cCount , cCount *100.0/count );
+        System.out.printf("D (4049) : %d 人(%.2f%%) " , dCount , dCount *100.0/count);
+        System.out.printf("G (0-39) : %d 人 (%.2f%%) ", gCount , gCount * 100.0/count);
 
     }else{
         System.out.println("没有输入任何有效分数");
