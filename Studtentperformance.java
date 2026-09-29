@@ -18,10 +18,16 @@ import java.util.List;
 
                 if(!input.hasNextDouble()){
                     System.out.println("请输入数字！");
-                    input.next();
-                    continue;
+                      System.out.println("请重新打过");
+                    String s = input.next();
+                    if (s.equalsIgnoreCase("q")) {
+                System.out.println("退出程序");
+                break;
                 }
-
+                 System.out.println("请输入数字或 q 退出！");
+                continue;
+                }
+                
             score = input.nextDouble();
             System.out.println();
 
@@ -32,6 +38,7 @@ import java.util.List;
     
             if (!isValidScore(score)){
                 System.out.println("无效的分数");
+                System.out.println("请重新打过");
                 System.out.println();
                 continue;
             }
@@ -100,20 +107,23 @@ import java.util.List;
           }
           System.out.println();
           System.out.println("分数段直方图");
-          int i ;
-          for ( i = 0 ; i < 10 ; i++);
+          int i;
+          for ( i = 0 ; i < 10 ; i++){
           int low = i * 10;
           int hight = (i == 9) ? 100 : i * 10 + 9;
           System.out.printf("%3d - %3d |" , low , hight);
-          for (int j = 0; j < 10; j++) System.out.println("");
-          System.out.println(" " + bins [1]);
+          for (int j = 0; j < bins [i]; j++){
+          System.out.println("\u2588");
+        }
+          System.out.println(" " + bins [i]);
+    }
 
         System.out.println();
         System.out.println(" 各等级人数和占比");
-        System.out.printf("A+ (99-100) : %d 人 (%.2f%%)" , aPlus , aPlus *100.0/count);
+        System.out.printf("A+ (99-100) : %d 人 (%.2f%%) " , aPlus , aPlus *100.0/count);
         System.out.printf("A- (80-98) : %d 人 (%.2f%%) " , aMinus , aMinus * 100.0/count);
         System.out.printf("B (60-79) : %d 人 (%.2f%%) " , bCount , bCount * 100.0/count);
-        System.out.printf("C (50-69) : %d 人 (%.2f%%) " , cCount , cCount *100.0/count );
+        System.out.printf("C (50-59) : %d 人 (%.2f%%) " , cCount , cCount *100.0/count );
         System.out.printf("D (4049) : %d 人(%.2f%%) " , dCount , dCount *100.0/count);
         System.out.printf("G (0-39) : %d 人 (%.2f%%) ", gCount , gCount * 100.0/count);
 
@@ -122,7 +132,7 @@ import java.util.List;
             }
             input.close();
         }
-
+        
         //分数有A,B,C,D,G
             public static void printGrade (double score){
             if (score >= 99){
@@ -192,12 +202,10 @@ import java.util.List;
                         return score >= 0 && score <= 100; 
                 }
             }
-        
+    
     
                 
               
-            
-                
-            
-            
+
+    
 
